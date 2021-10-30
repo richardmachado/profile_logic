@@ -1,9 +1,9 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
-import AddProfile from "../components/Profile/AddProfile.js";
+import AddProfile from "../components/AddProfile.js";
 import Login from "../components/Login/Login.js";
-import Profile from "../components/Profile/Profile";
-import Dashboard from "../components/Dasboard";
+import Profile from "../components/Profile";
+import Dashboard from "../components/D";
 
 export default function Routes() {
   return (
