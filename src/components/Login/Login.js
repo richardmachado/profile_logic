@@ -21,7 +21,6 @@ import hidePwdImg from "./hide-password.svg";
 
 const BACKEND_API = process.env.REACT_APP_BACKEND;
 
-
 export default function LoginForm(props) {
   const {
     register,
@@ -31,11 +30,11 @@ export default function LoginForm(props) {
   const [isLoading, setLoading] = useState(false);
   const [isRevealPwd, setIsRevealPwd] = useState(false);
 
-  const onSubmit = ( data ) => {
+  const onSubmit = (data) => {
     setLoading(true);
     axiosWithAuth()
       .post(`${BACKEND_API}/api/auth/login`, data)
-      .then( ( res ) => {
+      .then((res) => {
         // console.log(res)
         localStorage.setItem("token", res.data.token);
         props.history.push(`/profile/`);
@@ -141,7 +140,6 @@ export default function LoginForm(props) {
                 </>
               )}
             </div>
-    
           </Styledform>
         </form>
       </Container>

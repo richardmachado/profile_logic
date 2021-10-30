@@ -16,7 +16,7 @@ function Profile(props) {
     axios
       .get(`${BACKEND_API}/profile/${userID}`)
       .then((res) => {
-        setProfile( res.data );
+        setProfile(res.data);
         // setUserData()
       })
       .catch((error) => {
@@ -35,7 +35,6 @@ function Profile(props) {
         }
       });
   }, [userID, props.history]);
-
 
   return (
     <div className="body">
