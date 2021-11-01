@@ -1,30 +1,27 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+// import { userID, name } from "../../utils/decode_jwt";
 
 const BACKEND_API = process.env.REACT_APP_BACKEND;
 
 function Profile(props) {
   const [profile, setProfile] = useState([]);
-  // const [userData, setUserData] = useState({ userID: null, name: "" });
-  let token = localStorage.getItem("token");
-  let tokenData = JSON.parse(atob(token.split(".")[1]));
 
-  let userID = tokenData.userId;
-  let name = tokenData.username;
+  let token = localStorage.getItem("token");
+  let tokenData = JSON.parse(window.atob(token.split(".")[1]));
+
+  const userID = tokenData.userId;
+  const name = tokenData.username;
 
   useEffect(() => {
     axios
       .get(`${BACKEND_API}/profile/${userID}`)
       .then((res) => {
         setProfile(res.data);
-        // setUserData()
       })
       .catch((error) => {
         if (error.response.status === 401) {
           // Request made and server responded
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
           props.history.push("/addprofile");
         } else if (error.request) {
           // The request was made but no response was received

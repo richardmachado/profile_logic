@@ -23,13 +23,19 @@ export default function AddProfile(props) {
   } = useForm();
   const [isLoading, setLoading] = useState(false);
 
+  let token = localStorage.getItem("token");
+  let tokenData = JSON.parse(window.atob(token.split(".")[1]));
+
+  const userID = tokenData.userId;
+
   const onSubmit = (data) => {
+    console.log("data", data);
     setLoading(true);
     axiosWithAuth()
       .post(`${BACKEND_API}/profile`, data)
       .then((res) => {
         console.log(res);
-        props.history.push(`/profile`);
+        props.history.push(`/dashboard`);
       })
       .catch(handleErrors);
   };
@@ -52,6 +58,14 @@ export default function AddProfile(props) {
         <form onSubmit={handleSubmit(onSubmit)}>
           <Styledform>
             <Formgroup>
+              <input
+                type="hidden"
+                name="user_id"
+                value={userID}
+                {...register("user_id", {
+                  required: true,
+                })}
+              />
               {/* Start of UserName field */}
               {/* <Labels htmlFor="username"> */}
               First Name
@@ -109,12 +123,12 @@ export default function AddProfile(props) {
             </Formgroup>
 
             <div className="footer">
-              {!isLoading && <Button>Login</Button>}
+              {!isLoading && <Button>Add Profile </Button>}
 
               {isLoading && (
                 <>
                   <Button>
-                    <i disabled={isLoading}>Logging in..</i>
+                    <i disabled={isLoading}>Adding Profile..</i>
                   </Button>
 
                   <p>Please allow a few seconds while server wakes up</p>
