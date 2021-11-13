@@ -5,6 +5,7 @@ const BACKEND_API = process.env.REACT_APP_BACKEND;
 
 export default function Dasboard(props) {
   const [profile, setProfile] = useState([]);
+  const [errors, setError] = useState();
 
   let token = localStorage.getItem("token");
   let tokenData = JSON.parse(window.atob(token.split(".")[1]));
@@ -14,14 +15,15 @@ export default function Dasboard(props) {
 
   useEffect(() => {
     axios
-      .get(`${BACKEND_API}/glucose`)
+      .get(`${BACKEND_API}/glucose/${userID}`)
       .then((res) => {
         setProfile(res.data);
       })
       .catch((error) => {
-        if (error.response.status === 401) {
+        if (error.response.status === 404) {
           // Request made and server responded
-          props.history.push("/addprofile");
+          // console.log(error.response.data
+          setError(error.response.data);
         } else if (error.request) {
           // The request was made but no response was received
           console.log(error.request);
@@ -35,12 +37,18 @@ export default function Dasboard(props) {
   return (
     <div>
       <h1>Dashboard. Hi {name}</h1>
-      <h2>My Readings</h2>
+
+      {errors ? (
+        <h1>There are no readings, please add your first </h1>
+      ) : (
+        <h1>Here are your readings</h1>
+      )}
+
       {profile.map((profile_info) => {
         return (
           <div key={profile_info.id}>
-            <h2>{profile_info.glucose_reading} </h2>
-            <p>{new Date(profile_info.taken_at).toLocaleString()} </p>
+            <h2>Reading: {profile_info.glucose_reading} </h2>
+            <p>Taken at: {profile_info.taken_at} </p>
           </div>
         );
       })}

@@ -17,10 +17,11 @@ import {
 
 import showPwdImg from "./show-password.svg";
 import hidePwdImg from "./hide-password.svg";
+// import Nav from "./Nav/Nav";
 
 const BACKEND_API = process.env.REACT_APP_BACKEND;
 
-export default function LoginForm(props) {
+export default function Register(props) {
   const {
     register,
     handleSubmit,
@@ -29,12 +30,11 @@ export default function LoginForm(props) {
   const [isLoading, setLoading] = useState(false);
   const [isRevealPwd, setIsRevealPwd] = useState(false);
   const [errorss, setError] = useState();
-  const [badLogin, setBadLogin] = useState();
 
   const onSubmit = (data) => {
     setLoading(true);
     axiosWithAuth()
-      .post(`${BACKEND_API}/api/auth/login`, data)
+      .post(`${BACKEND_API}/api/auth/register`, data)
       .then((res) => {
         // console.log(res)
         localStorage.setItem("token", res.data.token);
@@ -46,9 +46,7 @@ export default function LoginForm(props) {
     if (err.response.status === 403) {
       console.log("There was a problem", err.response.status);
       setError(err.response.data);
-    } else if (err.response.status === 401) {
-      console.log("There was a problem", err.response.status);
-      setBadLogin(err.response.data);
+      // return <h1>'Invalid username or password', {err.response.status}</h1>;
     } else if (err.request) {
       console.log("There was a big problem with the request");
     } else {
@@ -58,9 +56,11 @@ export default function LoginForm(props) {
 
   return (
     <div>
+      {/* <Nav /> */}
+
       <Container>
-        <Login>Login</Login>
-        <Body>Enter your username and password.</Body>
+        <Login>Register</Login>
+        <Body>Enter a username and password.</Body>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Styledform>
             <Formgroup>
@@ -93,6 +93,11 @@ export default function LoginForm(props) {
                   Username is too long
                 </h2>
               )}
+              {errorss ? (
+                <p style={{ color: "red", fontSize: 19 }}>
+                  Username already exists!
+                </p>
+              ) : null}
               {/* End of UserName Field */}
               {/* Start of Password Field */}
               <Labels htmlFor="password">
@@ -128,16 +133,7 @@ export default function LoginForm(props) {
                 />
               </PwdContainer>
             </Formgroup>
-            {errorss ? (
-              <p style={{ color: "red", fontSize: 19 }}>
-                Username does not exists!
-              </p>
-            ) : null}
-            {badLogin ? (
-              <p style={{ color: "red", fontSize: 19 }}>
-                Invalid username or password
-              </p>
-            ) : null}
+
             <div className="footer">
               {!isLoading && <Button>Login</Button>}
 
