@@ -22,6 +22,7 @@ export default function AddProfile(props) {
     formState: { errors },
   } = useForm();
   const [isLoading, setLoading] = useState(false);
+  const [errorss, setError] = useState();
 
   let token = localStorage.getItem("token");
   let tokenData = JSON.parse(window.atob(token.split(".")[1]));
@@ -29,7 +30,6 @@ export default function AddProfile(props) {
   const userID = tokenData.userId;
 
   const onSubmit = (data) => {
-    console.log("data", data);
     setLoading(true);
     axiosWithAuth()
       .post(`${BACKEND_API}/profile`, data)
@@ -40,8 +40,9 @@ export default function AddProfile(props) {
       .catch(handleErrors);
   };
   function handleErrors(err) {
-    if (err.response) {
+    if (err.response.status === 403) {
       console.log("There was a problem", err.response.status);
+      setError(err.response.data);
       // return <h1>'Invalid username or password', {err.response.status}</h1>;
     } else if (err.request) {
       console.log("There was a big problem with the request");
@@ -121,6 +122,11 @@ export default function AddProfile(props) {
               )}
               {/* End of age field  */}
             </Formgroup>
+            {errorss ? (
+              <p style={{ color: "red", fontSize: 19 }}>
+                Profile already exists!
+              </p>
+            ) : null}
 
             <div className="footer">
               {!isLoading && <Button>Add Profile </Button>}

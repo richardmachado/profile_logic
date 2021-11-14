@@ -27,6 +27,9 @@ export default function ButtonAppBar() {
             Glucose App
           </Typography>
           <Button style={{ backgroundColor: "white" }}>
+            <Link to="/profile"> Profile</Link>
+          </Button>
+          <Button style={{ backgroundColor: "white" }}>
             <Link to="/dashboard"> Dashboard</Link>
           </Button>
           <Link to="/" style={{ backgroundColor: "white" }}>

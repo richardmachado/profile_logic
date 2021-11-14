@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import AddReading from "./AddReading/AddReading";
 
 const BACKEND_API = process.env.REACT_APP_BACKEND;
 
@@ -36,7 +37,10 @@ export default function Dasboard(props) {
 
   return (
     <div>
-      <h1>Dashboard. Hi {name}</h1>
+      <h1>Dashboard</h1>
+      <h1>Hi {name}</h1>
+
+      <AddReading />
 
       {errors ? (
         <h1>There are no readings, please add your first </h1>
