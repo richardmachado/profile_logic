@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { axiosWithAuth } from "../../utils/axiosWithAuth";
 
@@ -40,7 +40,30 @@ export default function AddReading(props) {
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <input type="text" name="glucose_reading" placeholder="reading" />
+        <input
+          type="text"
+          name="glucose_reading"
+          placeholder="reading"
+          {...register("glucose_reading", {
+            required: true,
+            maxLength: 4,
+          })}
+        />
+
+        {errors.glucose_reading &&
+          errors.glucose_reading.type === "required" && (
+            <h2 style={{ color: "red", marginBottom: "30px" }}>
+              Please enter a number
+            </h2>
+          )}
+
+        {errors.glucose_reading &&
+          errors.glucose_reading.type === "maxLength" && (
+            <h2 style={{ color: "red", marginBottom: "30px" }}>
+              Number is too long
+            </h2>
+          )}
+        <button type="submit">Submit</button>
       </form>
     </div>
   );
